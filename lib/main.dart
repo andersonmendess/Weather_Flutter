@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'package:weather/screens/home.dart';
 
-void main(){
+void main() {
   runApp(MaterialApp(
     title: "Weather",
     home: Home(),
+    debugShowCheckedModeBanner: false,
+    theme: ThemeData(
+      primaryColor: Colors.red,
+        hintColor: Colors.grey[300]
+    ),
   ));
 }
-
