@@ -1,5 +1,6 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:weather/utils/storage.dart';
+import 'package:weather/api/weather.dart';
 import 'dart:async';
 
 class WeatherController implements BlocBase {

@@ -42,7 +42,7 @@ class Weather {
 
   Future<void> fetchForecast() async {
 
-    if(geo == null) return null;
+    if(geo == null) return;
 
     http.Response response = await http.get(base + geo);
 
@@ -64,6 +64,7 @@ class Weather {
     switch(icons){
       case 'Parcial. nublado': return 'partly_cloudy'; break;
       case 'Chuva forte': return 'rain_heavy'; break;
+      case 'Chuva fraca': return 'rain_light'; break;
       case 'Encoberto': return 'partly_cloudy'; break;
       case 'Nublado': return 'cloudy'; break;
       case 'Limpo': return 'partly_cloudy'; break;

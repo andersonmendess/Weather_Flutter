@@ -9,7 +9,7 @@ class WeatherCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    if (data == null) {
+    if (data['geo'] == null) {
       return Container();
     }
 
@@ -25,14 +25,13 @@ class WeatherCard extends StatelessWidget {
 
     return Container(
       width: 300,
-      height: 410,
+      height: 380,
       padding: EdgeInsets.all(7),
       child: Card(
-        elevation: 0.3,
+        elevation: 0,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0),
             side: BorderSide(width: 0.9, color: Colors.grey[300])),
-        margin: EdgeInsets.only(bottom: 15, top: 15),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
