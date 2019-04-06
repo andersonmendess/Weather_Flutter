@@ -24,7 +24,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   path_provider: ^0.5.0+1
+  rxdart: ^0.21.0
   http: ^0.12.0+2
+  bloc_pattern: ^1.5.2
 
 dev_dependencies:
   flutter_test:
@@ -42,8 +44,6 @@ flutter:
     fonts:
     - asset: fonts/GoogleSans-Regular.ttf
     - asset: fonts/GoogleSans-Medium.ttf
-      weight: 700
-
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

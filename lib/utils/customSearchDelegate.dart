@@ -69,7 +69,7 @@ class CustomSearchDelegate extends SearchDelegate {
                       onTap: () {
                         Map<String, dynamic>  data = snapshot.data[index];
                         query = '';
-                        close(context, [data['geocode'],data['cityNm'], data['cntryCd']]);
+                        close(context, [data['geocode'],data['cityNm'], data['stCd']]);
                       },
                     );
                   },

@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:weather/Utils/storage.dart';
+import 'package:weather/utils/storage.dart';
 import 'package:http/http.dart' as http;
 
 class Weather {
@@ -32,7 +32,7 @@ class Weather {
     Map<String, dynamic> map = {
       "city": city,
       "country": country,
-      "icon": icon,
+      "icon" : icon,
       "temp": temp,
       "status": status,
       "geo": geo,
@@ -53,10 +53,7 @@ class Weather {
       status = data['wx'];
       icon = handleIcon(status);
 
-
-      print(Weather());
       await Storage().saveFile(Weather());
-      //Storage().getData();
 
     }
 

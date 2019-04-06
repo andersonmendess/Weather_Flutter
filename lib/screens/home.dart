@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:weather/widgets/weatherCard.dart';
-import 'package:weather/Utils/customSearchDelegate.dart';
-import 'package:weather/Utils/storage.dart';
+import 'package:weather/utils/customSearchDelegate.dart';
 import 'package:weather/api/weather.dart';
+import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:weather/bloc/weatherController.dart';
 import 'dart:convert';
 
 class Home extends StatefulWidget {
@@ -12,39 +13,15 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
-  String city;
-  String country;
-  String icon;
-  String temp;
-
-
-  @override
-  void initState() {
-    super.initState();
-    updateState();
-  }
-
-  void updateState() {
-    Storage().readFile().then( (data){
-      Map<String, dynamic> dados = json.decode(data);
-
-      setState(() {
-        city = dados['city'];
-        country = dados['country'];
-        icon = dados['icon'];
-        temp = dados['temp'];
-      });
-
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+
+    final WeatherController weatherBloc = BlocProvider.of<WeatherController>(context);
 
     return Scaffold(
       appBar: AppBar(
         title: Text("Weather"),
-        elevation: 0.3,
+        elevation: 0.4,
         centerTitle: true,
         actions: <Widget>[
           IconButton(
@@ -61,7 +38,7 @@ class _HomeState extends State<Home> {
                   Weather().country = res[2];
                   await Weather().fetchForecast();
 
-                  updateState();
+                  weatherBloc.update();
                 }
               });
             },
@@ -72,7 +49,16 @@ class _HomeState extends State<Home> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            WeatherCard(city, country, icon, temp),
+            StreamBuilder(
+              stream: weatherBloc.getWeather,
+                builder: ( (context, snapshot){
+                  if(snapshot.hasData){
+                    return WeatherCard(json.decode(snapshot.data));
+                  } else {
+                    return Container();
+                  }
+                }),
+            ),
           ]),
     ),
     );
