@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 
 class WeatherCard extends StatelessWidget {
-
   final Map<String, dynamic> data;
 
   WeatherCard(this.data);
 
   @override
   Widget build(BuildContext context) {
-
     if (data['geo'] == null) {
       return Container();
     }
@@ -35,10 +33,13 @@ class WeatherCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("${data['city']}, ${data['country']}", style: TextStyle(fontSize: 30, color: Colors.grey[800])),
+            Text("${data['city']}, ${data['country']}",
+                style: TextStyle(fontSize: 30, color: Colors.grey[800])),
             renderIcon(),
-            Text("${data['temp']}°C", style: TextStyle(fontSize: 40, color: Colors.grey[800])),
-            Text(data['status'], style: TextStyle(fontSize: 30, color: Colors.grey[800])),
+            Text("${data['temp']}°C",
+                style: TextStyle(fontSize: 40, color: Colors.grey[800])),
+            Text(data['status'],
+                style: TextStyle(fontSize: 30, color: Colors.grey[800])),
           ],
         ),
       ),

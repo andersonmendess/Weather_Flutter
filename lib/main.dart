@@ -7,14 +7,13 @@ void main() {
   runApp(MaterialApp(
     title: "Weather",
     home: BlocProvider<WeatherController>(
-        child: Home(),
+      child: Home(),
       bloc: WeatherController(),
     ),
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
-      fontFamily: 'GoogleSans',
-      primaryColor: Colors.white,
-        hintColor: Colors.grey[300]
-    ),
+        fontFamily: 'GoogleSans',
+        primaryColor: Colors.white,
+        hintColor: Colors.grey[300]),
   ));
 }

@@ -4,9 +4,7 @@ import 'package:weather/api/weather.dart';
 import 'dart:convert';
 
 class CustomSearchDelegate extends SearchDelegate {
-
   Weather weather = Weather();
-
 
   Future<List> searchLocale(keywords) async {
     if (keywords == null) return null;
@@ -67,9 +65,10 @@ class CustomSearchDelegate extends SearchDelegate {
                         title: Text(snapshot.data[index]['name']),
                       ),
                       onTap: () {
-                        Map<String, dynamic>  data = snapshot.data[index];
+                        Map<String, dynamic> data = snapshot.data[index];
                         query = '';
-                        close(context, [data['geocode'],data['cityNm'], data['stCd']]);
+                        close(context,
+                            [data['geocode'], data['cityNm'], data['stCd']]);
                       },
                     );
                   },

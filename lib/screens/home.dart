@@ -13,7 +13,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   @override
   Widget build(BuildContext context) {
     final WeatherController weatherBloc =
@@ -30,7 +29,6 @@ class _HomeState extends State<Home> {
             await Weather().fetchForecast();
             weatherBloc.update();
             Toast.show("Updated", context);
-
           },
         ),
         actions: <Widget>[

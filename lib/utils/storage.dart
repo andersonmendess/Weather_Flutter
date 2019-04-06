@@ -4,7 +4,6 @@ import 'dart:io';
 import 'dart:convert';
 
 class Storage {
-
   static final Storage _instance = Storage.internal();
 
   factory Storage() => _instance;
