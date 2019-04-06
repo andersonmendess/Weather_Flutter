@@ -8,6 +8,7 @@ void main() {
     home: Home(),
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
+      fontFamily: 'GoogleSans',
       primaryColor: Colors.white,
         hintColor: Colors.grey[300]
     ),

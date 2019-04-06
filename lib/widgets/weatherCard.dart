@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 class WeatherCard extends StatelessWidget {
 
   final String city;
-  final String location;
+  final String country;
   final String icon;
   final String temp;
 
-  WeatherCard(this.city, this.location, this.icon, this.temp);
+  WeatherCard(this.city, this.country, this.icon, this.temp);
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +40,13 @@ class WeatherCard extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text("$city, $location",
+                Text("$city, $country",
                     style:
-                        TextStyle(fontSize: 30, fontWeight: FontWeight.w400)),
+                        TextStyle(fontSize: 30, color: Colors.grey[800])),
                 renderIcon(),
                 Text("$temp°C",
                     style:
-                        TextStyle(fontSize: 39, fontWeight: FontWeight.w400)),
+                        TextStyle(fontSize: 39, color: Colors.grey[800])),
               ],
             ),
           ),
