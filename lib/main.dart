@@ -8,7 +8,7 @@ void main() {
     home: Home(),
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
-      primaryColor: Colors.red,
+      primaryColor: Colors.white,
         hintColor: Colors.grey[300]
     ),
   ));

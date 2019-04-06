@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class WeatherCard extends StatelessWidget {
+
   final String city;
   final String location;
   final String icon;
@@ -13,11 +14,11 @@ class WeatherCard extends StatelessWidget {
     return Container(
           width: 300,
           height: 330,
-          padding: EdgeInsets.all(4),
+          padding: EdgeInsets.all(5),
           child: Card(
             elevation: 0,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
+                borderRadius: BorderRadius.circular(12.0),
                 side: BorderSide(width: 0.9, color: Colors.grey[300])),
             margin: EdgeInsets.only(bottom: 15, top: 10),
             child: Column(
