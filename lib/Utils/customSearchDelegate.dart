@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:weather/api/weather.dart';
 import 'dart:convert';
 
 class CustomSearchDelegate extends SearchDelegate {
+
+  Weather weather = Weather();
+
 
   Future<List> searchLocale(keywords) async {
     if (keywords == null) return null;
@@ -58,14 +62,14 @@ class CustomSearchDelegate extends SearchDelegate {
                 return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (context, index) {
-                    print(snapshot.data[index]);
-
                     return InkWell(
                       child: ListTile(
                         title: Text(snapshot.data[index]['name']),
                       ),
                       onTap: () {
-
+                        Map<String, dynamic>  data = snapshot.data[index];
+                        query = '';
+                        close(context, [data['geocode'],data['cityNm'], data['cntryCd']]);
                       },
                     );
                   },

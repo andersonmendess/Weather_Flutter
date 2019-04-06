@@ -11,9 +11,25 @@ class WeatherCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    if(temp == null){
+      return Container();
+    }
+
+    Widget renderIcon(){
+
+      if(icon.isNotEmpty){
+        return Image.network(
+          'https://ssl.gstatic.com/onebox/weather/256/$icon.png',
+          height: 200,
+        );
+      }
+      return Container();
+    }
+
     return Container(
           width: 300,
-          height: 330,
+          height: 340,
           padding: EdgeInsets.all(5),
           child: Card(
             elevation: 0,
@@ -27,10 +43,7 @@ class WeatherCard extends StatelessWidget {
                 Text("$city, $location",
                     style:
                         TextStyle(fontSize: 30, fontWeight: FontWeight.w400)),
-                Image.network(
-                  'https://ssl.gstatic.com/onebox/weather/256/$icon.png',
-                  height: 200,
-                ),
+                renderIcon(),
                 Text("$temp°C",
                     style:
                         TextStyle(fontSize: 39, fontWeight: FontWeight.w400)),

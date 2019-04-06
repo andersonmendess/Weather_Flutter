@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:weather/widgets/weatherCard.dart';
 import 'package:weather/Utils/customSearchDelegate.dart';
-import 'package:weather/Utils/wstorage.dart';
+import 'package:weather/Utils/storage.dart';
+import 'package:weather/api/weather.dart';
+import 'dart:convert';
 
 class Home extends StatefulWidget {
   @override
@@ -10,28 +12,35 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
+  String city;
+  String country;
+  String icon;
+  String temp;
+
 
   @override
   void initState() {
     super.initState();
+    updateState();
+  }
 
-    Weather w = Weather();
+  void updateState() {
+    Storage().readFile().then( (data){
+      Map<String, dynamic> dados = json.decode(data);
 
-    WStorage ws = WStorage();
+      setState(() {
+        city = dados['city'];
+        country = dados['country'];
+        icon = dados['icon'];
+        temp = dados['temp'];
+      });
 
-    w.location = "Brasil";
-    w.city = "São Paulo";
-    w.temp = "33c";
-    w.icon = "rain";
-
-    //ws.saveFile(w);
-    ws.getData();
-    //print(w);
-
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Weather"),
@@ -44,7 +53,17 @@ class _HomeState extends State<Home> {
               showSearch(
                 context: context,
                 delegate: CustomSearchDelegate(),
-              );
+              ).then( (res) async {
+                if(res != null){
+
+                  Weather().geo = res[0];
+                  Weather().city = res[1];
+                  Weather().country = res[2];
+                  await Weather().fetchForecast();
+
+                  updateState();
+                }
+              });
             },
           ),
         ],
@@ -53,21 +72,7 @@ class _HomeState extends State<Home> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            WeatherCard("São Paulo", "Brasil", "partly_cloudy", "33"),
-            Padding(
-              padding: EdgeInsets.only(left: 5.0, right: 5.0),
-              child: TextField(
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius:BorderRadius.circular(12.0),
-                    ),
-                    fillColor: Colors.white,
-                    filled: true,
-                    hintText: 'Please enter your location',
-                    hintStyle: TextStyle(color: Colors.grey[600])
-                ),
-              ),
-            ),
+            WeatherCard(city, country, icon, temp),
           ]),
     ),
     );
