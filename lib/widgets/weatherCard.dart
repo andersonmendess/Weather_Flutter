@@ -7,40 +7,42 @@ class WeatherCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (data['geo'] == null) {
-      return Container();
-    }
+
+  print(this.data);
+
 
     Widget renderIcon() {
       if (data['icon'].isNotEmpty) {
-        return Image.network(
-          'https://ssl.gstatic.com/onebox/weather/256/${data['icon']}.png',
-          height: 200,
+        return Padding(
+          padding: EdgeInsets.all(19),
+          child: Image.asset(
+            "icons/${data['icon']}.png",
+            height: 190,
+          ),
         );
       }
       return Container();
     }
 
     return Container(
-      width: 300,
-      height: 380,
-      padding: EdgeInsets.all(7),
+      height: 420,
+      padding: EdgeInsets.all(15),
       child: Card(
-        elevation: 0,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
-            side: BorderSide(width: 0.9, color: Colors.grey[300])),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text("${data['city']}, ${data['country']}",
-                style: TextStyle(fontSize: 30, color: Colors.grey[800])),
-            renderIcon(),
-            Text("${data['temp']}°C",
-                style: TextStyle(fontSize: 40, color: Colors.grey[800])),
-            Text(data['status'],
-                style: TextStyle(fontSize: 30, color: Colors.grey[800])),
-          ],
+          borderRadius: BorderRadius.circular(15),
+        ),
+        color: Theme.of(context).cardColor,
+        child: Padding(
+          padding: EdgeInsets.all(8),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text("${data['city']}, ${data['country']}", style: Theme.of(context).textTheme.title),
+              renderIcon(),
+              Text("${data['temp']}°C", style: Theme.of(context).textTheme.title),
+              Text(data['status'], style: Theme.of(context).textTheme.title),
+            ],
+          ),
         ),
       ),
     );

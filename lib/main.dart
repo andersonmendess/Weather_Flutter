@@ -1,19 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:weather/screens/home.dart';
-import 'package:weather/bloc/weatherController.dart';
+import 'package:weather/bloc/home-bloc.dart';
+import 'package:weather/bloc/search-bloc.dart';
+import 'package:flutter/services.dart';
 
-void main() {
-  runApp(MaterialApp(
-    title: "Weather",
-    home: BlocProvider<WeatherController>(
-      child: Home(),
-      bloc: WeatherController(),
-    ),
-    debugShowCheckedModeBanner: false,
-    theme: ThemeData(
-        fontFamily: 'GoogleSans',
-        primaryColor: Colors.white,
-        hintColor: Colors.grey[300]),
-  ));
+void main() => runApp(App());
+
+class App extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+
+    return BlocProvider<HomeBloc>(
+      child: BlocProvider<SearchBloc>(
+        child: MaterialApp(
+          title: "Weather",
+          home: Home(),
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+              fontFamily: 'GoogleSans',
+              primaryColor: Colors.white,
+              hintColor: Colors.white,
+              accentColor: Colors.white,
+              cardColor: Color.fromARGB(235, 245, 245, 245),
+              textTheme: TextTheme(
+                title: TextStyle(fontSize: 25, color: Colors.grey[800]),
+              )),
+        ),
+        bloc: SearchBloc(),
+      ),
+      bloc: HomeBloc(),
+    );
+  }
 }

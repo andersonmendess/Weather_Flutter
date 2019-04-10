@@ -28,6 +28,7 @@ dependencies:
   http: ^0.12.0+2
   bloc_pattern: ^1.5.2
   toast: ^0.1.4
+  shared_preferences: ^0.5.2
 
 dev_dependencies:
   flutter_test:
@@ -46,15 +47,47 @@ flutter:
     - asset: fonts/GoogleSans-Regular.ttf
     - asset: fonts/GoogleSans-Medium.ttf
 
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
+  # The following line ensures that the Material     - icons font is
+  # included with your application, so that you can use the     - icons in
+  # the material     - icons class.
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
+
+  assets:
+    - icons/storm-weather.png
+    - icons/thunder-night.png
+    - icons/partly-cloudy-night.png
+    - icons/clear-day.png
+    - icons/thunder-weather.png
+    - icons/rain-snow-night.png
+    - icons/storm-weather-day.png
+    - icons/snow-night.png
+    - icons/unknown.png
+    - icons/rainy-day.png
+    - icons/showcase.png
+    - icons/storm-weather-night.png
+    - icons/rainy-weather.png
+    - icons/mostly-cloudy.png
+    - icons/haze-weather.png
+    - icons/rain-snow.png
+    - icons/snow-day.png
+    - icons/mostly-cloudy-night.png
+    - icons/haze-night.png
+    - icons/snow-weather.png
+    - icons/thunder-day.png
+    - icons/rainy-night.png
+    - icons/rain-snow-day.png
+    - icons/partly-cloudy.png
+    - icons/windy-night.png
+    - icons/windy-day.png
+    - icons/haze-day.png
+    - icons/cloudy-weather.png
+    - icons/windy-weather.png
+    - icons/clear-night.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

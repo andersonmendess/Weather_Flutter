@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:weather/utils/storage.dart';
+import 'package:weather/models/storage.dart';
 import 'package:http/http.dart' as http;
 
 class Weather {
@@ -10,13 +10,11 @@ class Weather {
   factory Weather() => _instance;
 
   Weather.internal();
-
   String city;
   String country;
   String icon;
   String temp;
   String status;
-  String geo;
 
   Weather.fromMap(Map map) {
     city = map['city'];
@@ -24,7 +22,6 @@ class Weather {
     icon = map['icon'];
     temp = map['temp'];
     status = map['status'];
-    geo = map['geo'];
   }
 
   Map toMap() {
@@ -34,15 +31,14 @@ class Weather {
       "icon": icon,
       "temp": temp,
       "status": status,
-      "geo": geo,
     };
     return map;
   }
 
-  Future<void> fetchForecast() async {
-    if (geo == null) return;
+  Future<void> fetchForecast(List location) async {
+    if (location[0] == null) return;
 
-    http.Response response = await http.get(base + geo);
+    http.Response response = await http.get(base + location[0]);
 
     if (response.statusCode == 200) {
       Map<String, dynamic> data = json.decode(response.body)['MOData'];
@@ -50,8 +46,11 @@ class Weather {
       temp = data['tmpC'].toString();
       status = data['wx'];
       icon = handleIcon(status);
+      city = location[1];
+      country = location[2];
+      print(location);
 
-      await Storage().saveFile(Weather());
+      await Storage().saveData(Weather());
     }
   }
 
@@ -84,13 +83,16 @@ class Weather {
       case 'Nevoeiro':
         return 'fog';
         break;
+      case 'Pancada de chuva':
+        return 'rainy-weather';
+        break;
       default:
-        return '';
+        return 'unknown';
     }
   }
 
   @override
   String toString() {
-    return "Weather (city: $city, country: $country, icon: $icon, temp: $temp, status: $status, geo: $geo)";
+    return "Weather (icon: $icon, temp: $temp, status: $status)";
   }
 }
