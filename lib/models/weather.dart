@@ -15,6 +15,7 @@ class Weather {
   String icon;
   String temp;
   String status;
+  String dyNght;
 
   Weather.fromMap(Map map) {
     city = map['city'];
@@ -22,6 +23,7 @@ class Weather {
     icon = map['icon'];
     temp = map['temp'];
     status = map['status'];
+    dyNght = map['dyNght'];
   }
 
   Map toMap() {
@@ -31,12 +33,13 @@ class Weather {
       "icon": icon,
       "temp": temp,
       "status": status,
+      "dyNght": dyNght,
     };
     return map;
   }
 
-  Future<void> fetchForecast(List location) async {
-    if (location[0] == null) return;
+  Future<String> fetchForecast(List location) async {
+    if (location[0] == null) return null;
 
     http.Response response = await http.get(base + location[0]);
 
@@ -45,50 +48,41 @@ class Weather {
 
       temp = data['tmpC'].toString();
       status = data['wx'];
-      icon = handleIcon(status);
+      dyNght = data['dyNght'];
+      icon = handleIcon(status, dyNght);
       city = location[1];
       country = location[2];
       print(location);
 
       await Storage().saveData(Weather());
+
+      return json.encode(Weather().toMap());
     }
+    
+    return null;
   }
 
-  String handleIcon(icons) {
-    switch (icons) {
-      case 'Parcial. nublado':
-        return 'partly_cloudy';
-        break;
-      case 'Chuva forte':
-        return 'rain_heavy';
-        break;
-      case 'Chuva fraca':
-        return 'rain_light';
-        break;
-      case 'Encoberto':
-        return 'partly_cloudy';
-        break;
-      case 'Nublado':
-        return 'cloudy';
-        break;
-      case 'Limpo':
-        return 'partly_cloudy';
-        break;
-      case 'Chuva':
-        return 'rain_heavy';
-        break;
-      case 'Ensolarado':
-        return 'sunny';
-        break;
-      case 'Nevoeiro':
-        return 'fog';
-        break;
-      case 'Pancada de chuva':
-        return 'rainy-weather';
-        break;
-      default:
-        return 'unknown';
-    }
+  String handleIcon(icons, dyNght) {
+
+    int index;
+
+    Map<String, List> conditions = {
+      'Parcial. nublado': ['partly-cloudy','partly-cloudy-night'],
+      'Chuva forte': ['storm-weather-day', 'storm-weather-night'],
+      'Chuva fraca': ['rainy-day', 'rainy-night'],
+      'Encoberto' : ['cloudy-weather','cloudy-weather'],
+      'Nublado': ['cloudy-weather','cloudy-weather'],
+      'Limpo' : ['clear-day', 'clear-night'],
+      'Chuva': ['rainy-day', 'rainy-night'],
+      'Ensolarado': ['clear-day','clear-day'],
+      'Nevoeiro': ['haze-day', 'haze-night'],
+      'Pancada de chuva': ['showcase', 'storm-weather-night']
+    };
+
+    if(dyNght == 'D') index = 0; else index = 1; 
+
+    return conditions[icons][index] ?? 'unknown';
+
   }
 
   @override

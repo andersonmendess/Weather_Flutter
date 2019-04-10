@@ -8,9 +8,6 @@ class WeatherCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-  print(this.data);
-
-
     Widget renderIcon() {
       if (data['icon'].isNotEmpty) {
         return Padding(

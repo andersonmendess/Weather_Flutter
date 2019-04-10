@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:weather/screens/home.dart';
-import 'package:weather/bloc/home-bloc.dart';
-import 'package:weather/bloc/search-bloc.dart';
+import 'package:weather/blocs/weather-bloc.dart';
 import 'package:flutter/services.dart';
 
 void main() => runApp(App());
@@ -13,9 +12,8 @@ class App extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle(statusBarColor: Colors.transparent));
 
-    return BlocProvider<HomeBloc>(
-      child: BlocProvider<SearchBloc>(
-        child: MaterialApp(
+    return BlocProvider<WeatherBloc>(
+      child: MaterialApp(
           title: "Weather",
           home: Home(),
           debugShowCheckedModeBanner: false,
@@ -29,9 +27,7 @@ class App extends StatelessWidget {
                 title: TextStyle(fontSize: 25, color: Colors.grey[800]),
               )),
         ),
-        bloc: SearchBloc(),
-      ),
-      bloc: HomeBloc(),
+      bloc: WeatherBloc(),
     );
   }
 }

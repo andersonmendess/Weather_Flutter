@@ -6,16 +6,27 @@ import 'package:weather/screens/search.dart';
 import 'package:weather/widgets/backgroundContainer.dart';
 import 'dart:convert';
 
-import 'package:weather/bloc/home-bloc.dart';
+import 'package:weather/blocs/weather-bloc.dart';
 
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final HomeBloc homeBloc = BlocProvider.of<HomeBloc>(context);
+    final WeatherBloc weatherBloc = BlocProvider.of<WeatherBloc>(context);
+
+    weatherBloc.main();
 
     return Stack(children: <Widget>[
-      BackgroudContainer('day'),
+      StreamBuilder(
+        stream: weatherBloc.getDayOrNight,
+        builder: (context, snapshot){
+          if(snapshot.hasData){
+            return BackgroudContainer(snapshot.data);
+          }else {
+            return Container();
+          }
+        },
+      ),
       CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
@@ -24,7 +35,9 @@ class Home extends StatelessWidget {
             elevation: 0,
             leading: IconButton(
               icon: Icon(Icons.refresh, color: Theme.of(context).accentColor),
-              onPressed: () {},
+              onPressed: () {
+                weatherBloc.main();
+              },
             ),
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
@@ -44,7 +57,7 @@ class Home extends StatelessWidget {
           ),
           SliverToBoxAdapter(
             child: StreamBuilder(
-              stream: homeBloc.getWeather,
+              stream: weatherBloc.getWeather,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return WeatherCard(json.decode(snapshot.data));
