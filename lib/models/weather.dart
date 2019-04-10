@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:weather/utils/storage.dart';
+import 'package:weather/models/storage.dart';
 import 'package:http/http.dart' as http;
 
 class Weather {
@@ -9,7 +9,15 @@ class Weather {
 
   factory Weather() => _instance;
 
-  Weather.internal();
+  Weather.internal(){
+    Storage().getData().then((e){
+      Map<String, dynamic> data = json.decode(e);
+      city = data['cityNm'];
+      country = data['stCd'];
+      geo = data['geocode'];
+      print(Weather());
+    });
+  }
 
   String city;
   String country;
@@ -39,7 +47,7 @@ class Weather {
     return map;
   }
 
-  Future<void> fetchForecast() async {
+  Future<void> fetchForecast(geo) async {
     if (geo == null) return;
 
     http.Response response = await http.get(base + geo);
@@ -50,8 +58,9 @@ class Weather {
       temp = data['tmpC'].toString();
       status = data['wx'];
       icon = handleIcon(status);
+      print(status);
 
-      await Storage().saveData(Weather());
+      await Storage().saveDataW(Weather());
     }
   }
 

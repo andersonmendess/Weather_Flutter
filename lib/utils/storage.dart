@@ -4,30 +4,27 @@ import 'dart:io';
 import 'dart:convert';
 
 class Storage {
+
   static final Storage _instance = Storage.internal();
 
   factory Storage() => _instance;
 
   Storage.internal();
 
-  void setData(Weather w) {
-    saveFile(w);
-  }
-
-  Future<File> getFile() async {
+  Future<File> getPath() async {
     final directory = await getApplicationDocumentsDirectory();
     return File("${directory.path}/data.json");
   }
 
-  Future<File> saveFile(Weather w) async {
+  Future<void> saveData(Weather w) async {
     String data = json.encode(w.toMap());
-    final file = await getFile();
-    return file.writeAsString(data);
+    final file = await getPath();
+    file.writeAsString(data);
   }
 
   Future<String> readFile() async {
     try {
-      final file = await getFile();
+      final file = await getPath();
       return file.readAsString();
     } catch (e) {
       return null;

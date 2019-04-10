@@ -1,73 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:weather/widgets/weatherCard.dart';
-import 'package:weather/utils/customSearchDelegate.dart';
-import 'package:weather/api/weather.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:weather/bloc/weatherController.dart';
-import 'package:toast/toast.dart';
+import 'package:weather/screens/search.dart';
+
+import 'package:weather/widgets/backgroundContainer.dart';
 import 'dart:convert';
 
-class Home extends StatefulWidget {
-  @override
-  _HomeState createState() => _HomeState();
-}
+import 'package:weather/bloc/home-bloc.dart';
 
-class _HomeState extends State<Home> {
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final WeatherController weatherBloc =
-        BlocProvider.of<WeatherController>(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Weather"),
-        elevation: 0.4,
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.refresh, color: Colors.grey[700]),
-          onPressed: () async {
-            await Weather().fetchForecast();
-            weatherBloc.update();
-            Toast.show("Updated", context);
-          },
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search, color: Colors.grey[700]),
-            onPressed: () {
-              showSearch(
-                context: context,
-                delegate: CustomSearchDelegate(),
-              ).then((res) async {
-                if (res != null) {
-                  Weather().geo = res[0];
-                  Weather().city = res[1];
-                  Weather().country = res[2];
-                  await Weather().fetchForecast();
+    HomeBloc homeBloc = BlocProvider.of<HomeBloc>(context);
 
-                  weatherBloc.update();
+    return Stack(children: <Widget>[
+      BackgroudContainer('day'),
+      CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            backgroundColor: Colors.transparent,
+            brightness: Brightness.dark,
+            elevation: 0,
+            leading: IconButton(
+              icon: Icon(Icons.refresh, color: Theme.of(context).accentColor),
+              onPressed: () {},
+            ),
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(
+                "Weather",
+                style: TextStyle(color: Theme.of(context).accentColor),
+              ),
+              centerTitle: true,
+            ),
+            actions: <Widget>[
+              IconButton(
+                  icon:
+                      Icon(Icons.search, color: Theme.of(context).accentColor),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Search()));
+                  }),
+            ],
+          ),
+          SliverToBoxAdapter(
+            child: StreamBuilder(
+              stream: homeBloc.getWeather,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return WeatherCard(json.decode(snapshot.data));
+                } else {
+                  return Container();
                 }
-              });
-            },
+              },
+            ),
           ),
         ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              StreamBuilder(
-                stream: weatherBloc.getWeather,
-                builder: ((context, snapshot) {
-                  if (snapshot.hasData) {
-                    return WeatherCard(json.decode(snapshot.data));
-                  } else {
-                    return Container();
-                  }
-                }),
-              ),
-            ]),
-      ),
-    );
+      )
+    ]);
   }
 }
