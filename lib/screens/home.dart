@@ -1,16 +1,15 @@
-import 'package:flutter/material.dart';
+import 'package:weather/widgets/backgroundContainer.dart';
 import 'package:weather/widgets/weatherCard.dart';
+import 'package:weather/blocs/weather-bloc.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:weather/screens/search.dart';
-
-import 'package:weather/widgets/backgroundContainer.dart';
+import 'package:flutter/material.dart';
 import 'dart:convert';
-
-import 'package:weather/blocs/weather-bloc.dart';
 
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    TimeOfDay now = TimeOfDay.now();
 
     final WeatherBloc weatherBloc = BlocProvider.of<WeatherBloc>(context);
 
@@ -19,11 +18,11 @@ class Home extends StatelessWidget {
     return Stack(children: <Widget>[
       StreamBuilder(
         stream: weatherBloc.getDayOrNight,
-        builder: (context, snapshot){
-          if(snapshot.hasData){
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
             return BackgroudContainer(snapshot.data);
-          }else {
-            return Container();
+          } else {
+            return BackgroudContainer(now.period.index == 0 ? 'D' : "N");
           }
         },
       ),
@@ -51,7 +50,8 @@ class Home extends StatelessWidget {
                   icon:
                       Icon(Icons.search, color: Theme.of(context).accentColor),
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Search()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Search()));
                   }),
             ],
           ),

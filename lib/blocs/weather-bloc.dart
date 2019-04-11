@@ -7,6 +7,7 @@ import 'package:weather/models/search.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WeatherBloc implements BlocBase {
+
   Search search = Search();
 
   var _weatherController = StreamController<String>.broadcast();
@@ -27,9 +28,7 @@ class WeatherBloc implements BlocBase {
   }
 
   void dayOrNight(data) {
-    String dn = json.decode(data)['dyNght'];
-    dn == 'N' ? dn = 'Night' : dn = 'Day';
-    _weatherDNController.add(dn);
+    _weatherDNController.add(json.decode(data)['dyNght']);
   }
 
   void input(words) async {

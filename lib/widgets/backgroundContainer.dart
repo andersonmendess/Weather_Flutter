@@ -7,11 +7,11 @@ class BackgroudContainer extends StatelessWidget {
   BackgroudContainer(this.theme);
 
   final Map<String, List<Color>> themes = {
-    'Day': [
+    'D': [
       Color.fromARGB(255, 31, 170, 250),
       Color.fromARGB(255, 170, 235, 253),
     ],
-    'Night': [
+    'N': [
       Color.fromARGB(255, 15, 35, 63),
       Color.fromARGB(255, 15, 15, 25),
     ]

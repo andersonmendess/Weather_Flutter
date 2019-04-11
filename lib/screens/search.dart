@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:weather/blocs/weather-bloc.dart';
-
 import 'package:weather/widgets/backgroundContainer.dart';
+import 'package:weather/blocs/weather-bloc.dart';
+import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:flutter/material.dart';
 import 'dart:convert';
 
 class Search extends StatefulWidget {
@@ -12,6 +11,7 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   List locations = [];
+  TimeOfDay now = TimeOfDay.now();
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +20,11 @@ class _SearchState extends State<Search> {
     return Stack(children: <Widget>[
       StreamBuilder(
         stream: weatherBloc.getDayOrNight,
-        builder: (context, snapshot){
-          if(snapshot.hasData){
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
             return BackgroudContainer(snapshot.data);
-          }else {
-            return Container();
+          } else {
+            return BackgroudContainer(now.period.index == 0 ? 'D' : "N");
           }
         },
       ),
@@ -75,6 +75,7 @@ class _SearchState extends State<Search> {
                       List<dynamic> locations = json.decode(snapshot.data);
                       return ListView.builder(
                         shrinkWrap: true,
+                        physics: BouncingScrollPhysics(),
                         itemCount: locations.length,
                         itemBuilder: (context, index) {
                           return Card(
@@ -102,7 +103,7 @@ class _SearchState extends State<Search> {
                       return Container();
                     }
                   },
-                )
+                ),
               ],
             ),
           )),

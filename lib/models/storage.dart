@@ -1,7 +1,7 @@
 import 'package:path_provider/path_provider.dart';
 import 'package:weather/models/weather.dart';
-import 'dart:io';
 import 'dart:convert';
+import 'dart:io';
 
 class Storage {
   static final Storage _instance = Storage.internal();

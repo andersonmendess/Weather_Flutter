@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:weather/blocs/weather-bloc.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:weather/screens/home.dart';
-import 'package:weather/blocs/weather-bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 void main() => runApp(App());
@@ -22,7 +22,7 @@ class App extends StatelessWidget {
               primaryColor: Colors.white,
               hintColor: Colors.white,
               accentColor: Colors.white,
-              cardColor: Color.fromARGB(235, 245, 245, 245),
+              cardColor: Color.fromARGB(230, 245, 245, 245),
               textTheme: TextTheme(
                 title: TextStyle(fontSize: 25, color: Colors.grey[800]),
               )),

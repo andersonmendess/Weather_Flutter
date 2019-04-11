@@ -1,6 +1,6 @@
-import 'dart:convert';
 import 'package:weather/models/storage.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Weather {
   final String base = "https://dsx.weather.com/wxd/v2/MORecord/pt_BR/";
@@ -52,7 +52,6 @@ class Weather {
       icon = handleIcon(status, dyNght);
       city = location[1];
       country = location[2];
-      print(location);
 
       await Storage().saveData(Weather());
 
