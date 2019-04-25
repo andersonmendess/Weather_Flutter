@@ -1,27 +1,40 @@
 import 'package:weather/widgets/backgroundContainer.dart';
 import 'package:weather/widgets/weatherCard.dart';
 import 'package:weather/blocs/weather-bloc.dart';
-import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:weather/screens/search.dart';
 import 'package:flutter/material.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  WeatherBloc bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    bloc = WeatherBloc();
+    bloc.main();
+  }
+
+  @override
+  void dispose() {
+    bloc?.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    TimeOfDay now = TimeOfDay.now();
-
-    final WeatherBloc weatherBloc = BlocProvider.of<WeatherBloc>(context);
-
-    weatherBloc.main();
-
     return Stack(children: <Widget>[
       StreamBuilder(
-        stream: weatherBloc.getDayOrNight,
+        stream: bloc.getDayOrNight,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return BackgroudContainer(snapshot.data);
           } else {
-            return BackgroudContainer(now.period.index == 0 ? 'D' : "N");
+            return BackgroudContainer("D");
           }
         },
       ),
@@ -34,7 +47,7 @@ class Home extends StatelessWidget {
             leading: IconButton(
               icon: Icon(Icons.refresh, color: Theme.of(context).accentColor),
               onPressed: () {
-                weatherBloc.main();
+                bloc.main();
               },
             ),
             flexibleSpace: FlexibleSpaceBar(
@@ -46,15 +59,17 @@ class Home extends StatelessWidget {
             ),
             actions: <Widget>[
               IconButton(
-                  icon: Icon(Icons.search, color: Theme.of(context).accentColor),
+                  icon:
+                      Icon(Icons.search, color: Theme.of(context).accentColor),
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Search()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Search()));
                   }),
             ],
           ),
           SliverToBoxAdapter(
             child: StreamBuilder(
-              stream: weatherBloc.getWeather,
+              stream: bloc.getWeather,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return WeatherCard(snapshot.data);

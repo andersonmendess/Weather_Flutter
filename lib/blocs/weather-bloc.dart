@@ -1,10 +1,15 @@
-import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:weather/models/location.dart';
 import 'package:weather/models/weather.dart';
 import 'package:weather/models/search.dart';
 import 'dart:async';
 
-class WeatherBloc implements BlocBase {
+class WeatherBloc {
+
+  static final WeatherBloc _bloc = new WeatherBloc._internal();
+  factory WeatherBloc(){
+    return _bloc;
+  }
+  WeatherBloc._internal();
 
   Search search = Search();
   Location location = Location();
@@ -20,13 +25,17 @@ class WeatherBloc implements BlocBase {
 
   void main() async {
     await location.getStoredLocation();
-    await weather.fetchForecast(location);
-    dayOrNight(weather);
-    _weatherController.add(weather);
+    await weatherStart(location);
   }
 
-  void dayOrNight(Weather w) {
-    _weatherDNController.add(w.dyNght);
+  Future<void> weatherStart(location) async {
+    await weather.fetchForecast(location);
+    _weatherController.add(weather);
+    dayOrNight();
+  }
+
+  void dayOrNight() {
+    _weatherDNController.add(weather.dyNght);
   }
 
   void input(words) async {
@@ -37,9 +46,9 @@ class WeatherBloc implements BlocBase {
   setLocation(Map newLocation) async {
     location.fromMap(newLocation);
     location.setStoredLocation();
+    await weatherStart(location);
   }
 
-  @override
   void dispose() {
     _weatherController.close();
     _weatherDNController.close();

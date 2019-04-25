@@ -1,6 +1,5 @@
 import 'package:weather/widgets/backgroundContainer.dart';
 import 'package:weather/blocs/weather-bloc.dart';
-import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
@@ -10,24 +9,20 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-  List locations = [];
-  TimeOfDay now = TimeOfDay.now();
+
+  WeatherBloc bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    bloc = WeatherBloc();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final WeatherBloc weatherBloc = BlocProvider.of<WeatherBloc>(context);
 
     return Stack(children: <Widget>[
-      StreamBuilder(
-        stream: weatherBloc.getDayOrNight,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return BackgroudContainer(snapshot.data);
-          } else {
-            return BackgroudContainer(now.period.index == 0 ? 'D' : "N");
-          }
-        },
-      ),
+      BackgroudContainer("D"),
       CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
@@ -62,13 +57,14 @@ class _SearchState extends State<Search> {
                         hintStyle: TextStyle(color: Colors.grey[800])),
                     style: TextStyle(color: Colors.black, fontSize: 19),
                     textAlign: TextAlign.center,
+                    autofocus: true,
                     onSubmitted: (e) {
-                      weatherBloc.input(e);
+                      bloc.input(e);
                     },
                   ),
                 ),
                 StreamBuilder(
-                  stream: weatherBloc.getLocations,
+                  stream: bloc.getLocations,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       List<dynamic> locations = json.decode(snapshot.data);
@@ -84,7 +80,7 @@ class _SearchState extends State<Search> {
                               height: 65,
                               child: InkWell(
                                 onTap: () {
-                                  weatherBloc.setLocation(locations[index]);
+                                  bloc.setLocation(locations[index]);
                                   Navigator.pop(context);
                                 },
                                 child: ListTile(
