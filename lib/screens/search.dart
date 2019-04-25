@@ -35,8 +35,7 @@ class _SearchState extends State<Search> {
             brightness: Brightness.dark,
             elevation: 0,
             leading: IconButton(
-              icon:
-                  Icon(Icons.arrow_back, color: Theme.of(context).accentColor),
+              icon: Icon(Icons.arrow_back, color: Theme.of(context).accentColor),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -85,8 +84,7 @@ class _SearchState extends State<Search> {
                               height: 65,
                               child: InkWell(
                                 onTap: () {
-                                  weatherBloc.setLocation(
-                                      json.encode(locations[index]));
+                                  weatherBloc.setLocation(locations[index]);
                                   Navigator.pop(context);
                                 },
                                 child: ListTile(

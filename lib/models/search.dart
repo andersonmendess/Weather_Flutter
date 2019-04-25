@@ -1,4 +1,3 @@
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -16,14 +15,6 @@ class Search {
       return utf8.decode(res.bodyBytes);
     }
     return null;
-
-  }
-
-  Future<void> saveLocation(data) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    Map<String, dynamic> locale = json.decode(data);
-
-    await prefs.setStringList('location', [locale['geocode'], locale['cityNm'], locale['stCd']]);
 
   }
 

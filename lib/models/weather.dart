@@ -1,6 +1,7 @@
-import 'package:weather/models/storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:weather/models/location.dart';
 
 class Weather {
   final String base = "https://dsx.weather.com/wxd/v2/MORecord/pt_BR/";
@@ -38,10 +39,10 @@ class Weather {
     return map;
   }
 
-  Future<String> fetchForecast(List location) async {
-    if (location[0] == null) return null;
+  Future<void> fetchForecast(Location location) async {
+    if (location.geocode == null) return null;
 
-    http.Response response = await http.get(base + location[0]);
+    http.Response response = await http.get(base + location.geocode);
 
     if (response.statusCode == 200) {
       Map<String, dynamic> data = json.decode(response.body)['MOData'];
@@ -50,15 +51,10 @@ class Weather {
       status = data['wx'];
       dyNght = data['dyNght'];
       icon = handleIcon(status, dyNght);
-      city = location[1];
-      country = location[2];
-
-      await Storage().saveData(Weather());
-
-      return json.encode(Weather().toMap());
+      city = location.cityNm;
+      country = location.stCd;
     }
     
-    return null;
   }
 
   String handleIcon(icons, dyNght) {

@@ -1,16 +1,16 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:weather/models/storage.dart';
-import 'dart:async';
-import 'dart:convert';
+import 'package:weather/models/location.dart';
 import 'package:weather/models/weather.dart';
 import 'package:weather/models/search.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:async';
 
 class WeatherBloc implements BlocBase {
 
   Search search = Search();
+  Location location = Location();
+  Weather weather = Weather();
 
-  var _weatherController = StreamController<String>.broadcast();
+  var _weatherController = StreamController<Weather>.broadcast();
   var _weatherDNController = StreamController<String>.broadcast();
   var _searchController = StreamController<String>.broadcast();
 
@@ -19,16 +19,14 @@ class WeatherBloc implements BlocBase {
   Stream get getDayOrNight => _weatherDNController.stream;
 
   void main() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await Weather().fetchForecast(prefs.getStringList('location'));
-    Storage().getData().then((d) {
-      dayOrNight(d);
-      _weatherController.add(d);
-    });
+    await location.getStoredLocation();
+    await weather.fetchForecast(location);
+    dayOrNight(weather);
+    _weatherController.add(weather);
   }
 
-  void dayOrNight(data) {
-    _weatherDNController.add(json.decode(data)['dyNght']);
+  void dayOrNight(Weather w) {
+    _weatherDNController.add(w.dyNght);
   }
 
   void input(words) async {
@@ -36,13 +34,9 @@ class WeatherBloc implements BlocBase {
     _searchController.add(res);
   }
 
-  setLocation(String location) async {
-    await search.saveLocation(location);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String data =
-        await Weather().fetchForecast(prefs.getStringList('location'));
-    _weatherController.add(data);
-    dayOrNight(data);
+  setLocation(Map newLocation) async {
+    location.fromMap(newLocation);
+    location.setStoredLocation();
   }
 
   @override

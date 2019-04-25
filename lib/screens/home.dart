@@ -4,7 +4,6 @@ import 'package:weather/blocs/weather-bloc.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:weather/screens/search.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
 
 class Home extends StatelessWidget {
   @override
@@ -47,11 +46,9 @@ class Home extends StatelessWidget {
             ),
             actions: <Widget>[
               IconButton(
-                  icon:
-                      Icon(Icons.search, color: Theme.of(context).accentColor),
+                  icon: Icon(Icons.search, color: Theme.of(context).accentColor),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Search()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Search()));
                   }),
             ],
           ),
@@ -60,7 +57,7 @@ class Home extends StatelessWidget {
               stream: weatherBloc.getWeather,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return WeatherCard(json.decode(snapshot.data));
+                  return WeatherCard(snapshot.data);
                 } else {
                   return Container();
                 }
