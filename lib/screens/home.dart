@@ -10,6 +10,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final int hour = TimeOfDay.now().hour;
+  String sDoN;
   WeatherBloc bloc;
 
   @override
@@ -27,6 +29,9 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+
+    if(hour > 6 && hour < 18) sDoN = 'D'; else sDoN = 'N';
+    
     return Stack(children: <Widget>[
       StreamBuilder(
         stream: bloc.getDayOrNight,
@@ -34,7 +39,7 @@ class _HomeState extends State<Home> {
           if (snapshot.hasData) {
             return BackgroudContainer(snapshot.data);
           } else {
-            return BackgroudContainer("W");
+            return BackgroudContainer(sDoN);
           }
         },
       ),
