@@ -14,6 +14,10 @@ class BackgroudContainer extends StatelessWidget {
     'N': [
       Color.fromARGB(255, 15, 35, 63),
       Color.fromARGB(255, 15, 15, 25),
+    ],
+    'W': [
+      Color.fromARGB(255, 50, 50, 50),
+      Color.fromARGB(255, 50, 50, 50),
     ]
   };
 

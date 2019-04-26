@@ -1,6 +1,5 @@
 import 'package:weather/models/location.dart';
 import 'package:weather/models/weather.dart';
-import 'package:weather/models/search.dart';
 import 'dart:async';
 
 class WeatherBloc {
@@ -11,7 +10,6 @@ class WeatherBloc {
   }
   WeatherBloc._internal();
 
-  Search search = Search();
   Location location = Location();
   Weather weather = Weather();
 
@@ -25,22 +23,19 @@ class WeatherBloc {
 
   void main() async {
     await location.getStoredLocation();
-    await weatherStart(location);
+    if(location?.geocode != null){
+      await weatherStart(location);
+    }
   }
 
   Future<void> weatherStart(location) async {
     await weather.fetchForecast(location);
     _weatherController.add(weather);
-    dayOrNight();
+    dayOrNight(weather);
   }
 
-  void dayOrNight() {
+  void dayOrNight(Weather weather) {
     _weatherDNController.add(weather.dyNght);
-  }
-
-  void input(words) async {
-    String res = await search.searchLocation(words);
-    _searchController.add(res);
   }
 
   setLocation(Map newLocation) async {

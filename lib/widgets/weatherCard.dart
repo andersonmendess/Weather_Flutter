@@ -42,10 +42,13 @@ class WeatherCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text("${weather.city}, ${weather.country}",style: TextStyle(color: textColor, fontSize: 30)),
+              Text("${weather.city}, ${weather.country}",
+                  style: TextStyle(color: textColor, fontSize: 30)),
               renderIcon(),
-              Text("${weather.temp}°C", style: TextStyle(color: textColor, fontSize: 36)),
-              Text(weather.status, style: TextStyle(color: textColor, fontSize: 30)),
+              Text("${weather.temp}°C",
+                  style: TextStyle(color: textColor, fontSize: 36)),
+              Text(weather.status,
+                  style: TextStyle(color: textColor, fontSize: 30)),
             ],
           ),
         ),

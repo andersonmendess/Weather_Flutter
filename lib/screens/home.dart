@@ -1,7 +1,7 @@
 import 'package:weather/widgets/backgroundContainer.dart';
 import 'package:weather/widgets/weatherCard.dart';
 import 'package:weather/blocs/weather-bloc.dart';
-import 'package:weather/screens/search.dart';
+import 'package:weather/models/customSearchDelegate.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -34,7 +34,7 @@ class _HomeState extends State<Home> {
           if (snapshot.hasData) {
             return BackgroudContainer(snapshot.data);
           } else {
-            return BackgroudContainer("D");
+            return BackgroudContainer("W");
           }
         },
       ),
@@ -62,8 +62,11 @@ class _HomeState extends State<Home> {
                   icon:
                       Icon(Icons.search, color: Theme.of(context).accentColor),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Search()));
+                    showSearch(
+                      context: context,
+                      delegate: CustomSearchDelegate(),
+                    ).then((location) =>
+                        location != null ? bloc.setLocation(location) : null);
                   }),
             ],
           ),
@@ -71,10 +74,16 @@ class _HomeState extends State<Home> {
             child: StreamBuilder(
               stream: bloc.getWeather,
               builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return WeatherCard(snapshot.data);
-                } else {
-                  return Container();
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                  case ConnectionState.none:
+                    return Container();
+                  default:
+                    if (snapshot.hasData) {
+                      return WeatherCard(snapshot.data);
+                    } else {
+                      return Container();
+                    }
                 }
               },
             ),
