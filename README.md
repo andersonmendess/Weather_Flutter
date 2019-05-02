@@ -1,6 +1,16 @@
-# weather
+# weather application
 
-A new Flutter application.
+A simple weather application made using Flutter.
+
+## Screenshots
+
+
+<img src="https://github.com/Andersonmendess/Weather_Flutter/blob/master/screenshots/night1.png" width="450">
+<img src="https://github.com/Andersonmendess/Weather_Flutter/blob/master/screenshots/night2.png" width="450">
+<img src="https://github.com/Andersonmendess/Weather_Flutter/blob/master/screenshots/day.png" width="450">
+<img src="https://github.com/Andersonmendess/Weather_Flutter/blob/master/screenshots/search.png" width="450">
+
+
 
 ## Getting Started
 
